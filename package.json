@@ -8,6 +8,7 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-scripts": "1.1.4",
+    "react-select": "^1.2.1",
     "webfontloader": "^1.6.28"
   },
   "scripts": {

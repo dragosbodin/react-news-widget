@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import NewsItem from '../NewsItem';
+import Select from 'react-select';
 
+import 'react-select/dist/react-select.css';
 import './NewsWidget.css';
 
 class NewsWidget extends Component {
@@ -28,12 +30,21 @@ class NewsWidget extends Component {
 			.catch(err => console.log(err));
 	}
 
+	getSources() {
+		axios.get(`https://newsapi.org/v2/sources?country=gb&apiKey=17fcb50c25f244a59d6a87fda4730bef`)
+			.then(res => this.setState({ sources: res.data.sources }))
+			.catch(err => console.log(err));
+	}
+
 	componentWillMount() {
 		this.getNews();
+		this.getSources();
 	}
 
 	render() {
 		let articles;
+		let sources;
+
 		if (this.state.articles) {
 			articles = this.state.articles.map(article => {
 				return (
@@ -42,13 +53,25 @@ class NewsWidget extends Component {
 			});
 		}
 
+		if (this.state.sources) {
+			sources = this.state.sources.map(source => {
+				return {
+					value: source.id,
+					label: source.name
+				};
+			});
+		}
+
 		return (
 			<div className="newsFeed">
 				<div className="newsFeed__heading d-flex flex-row align-items-center justify-content-between">
 					<h3 className="newsFeed__title">News</h3>
-					<select className="newsFeed__sources">
-
-					</select>
+					<Select
+						className="newsFeed__sources"
+						placeholder="Filter By Source"
+						value={this.state.selectedSource}
+						options={sources.length > 0 ? sources : null}
+					/>
 				</div>
 				<ul className="newsFeed__list">
 					{articles}
