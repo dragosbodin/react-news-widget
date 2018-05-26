@@ -27,8 +27,18 @@ class NewsWidget extends Component {
 		}
 	}
 
+	handleChangeSource(selectedOption) {
+		this.setState({ currentPage: 1, selectedSource: selectedOption == null ? '' : selectedOption.value, articles: [] }, () => this.getNews());
+	}
+
 	getNews() {
-		axios.get(`https://newsapi.org/v2/top-headlines?country=gb&pageSize=5&page=${this.state.currentPage}&apiKey=17fcb50c25f244a59d6a87fda4730bef`)
+		let newsUrl;
+		if (this.state.selectedSource === '') {
+			newsUrl = `https://newsapi.org/v2/top-headlines?country=gb&pageSize=5&page=${this.state.currentPage}&apiKey=17fcb50c25f244a59d6a87fda4730bef`;
+		} else {
+			newsUrl = `https://newsapi.org/v2/top-headlines?pageSize=5&page=${this.state.currentPage}&sources=${this.state.selectedSource}&apiKey=17fcb50c25f244a59d6a87fda4730bef`;
+		}
+		axios.get(newsUrl)
 			.then(res => {
 				for (let article of res.data.articles) {
 					this.setState(prevState => ({
@@ -81,14 +91,20 @@ class NewsWidget extends Component {
 						placeholder="Filter By Source"
 						value={this.state.selectedSource}
 						options={sources.length > 0 ? sources : null}
+						onChange={this.handleChangeSource.bind(this)}
 					/>
 				</div>
-				<ul className="newsFeed__list">
-					{articles}
-				</ul>
+				{articles.length > 0 ? (
+					<ul className="newsFeed__list">
+						{articles}
+					</ul>
+				) : (
+					<p className="newsFeed__empty">No news articles were found.</p>
+				)}
 				<button
 					className="newsFeed__more btn btn-primary"
-					onClick={this.handleShowMore.bind(this)}>{this.state.currentPage === this.state.maxPages ? 'No More News' : 'Show More'}</button>
+					onClick={this.handleShowMore.bind(this)}
+				>{this.state.currentPage === this.state.maxPages ? 'No More News' : 'Show More'}</button>
 				<p className="newsFeed__sponsor">Powered by <a href="https://newsapi.org/" target="_blank" rel="noopener noreferrer">News API</a>.</p>
 			</div>
 		)
