@@ -14,7 +14,16 @@ class NewsWidget extends Component {
 			articles: [],
 			sources: [],
 			currentPage: 1,
+			maxPages: 1,
 			selectedSource: ''
+		}
+	}
+
+	handleShowMore() {
+		if (this.state.currentPage < this.state.maxPages) {
+			this.setState(prevState => ({
+				currentPage: prevState.currentPage + 1
+			}), () => this.getNews());
 		}
 	}
 
@@ -26,6 +35,7 @@ class NewsWidget extends Component {
 						articles: [...prevState.articles, article]
 					}));
 				}
+				this.setState({ maxPages: Math.ceil(res.data.totalResults / 5) });
 			})
 			.catch(err => console.log(err));
 	}
@@ -76,7 +86,9 @@ class NewsWidget extends Component {
 				<ul className="newsFeed__list">
 					{articles}
 				</ul>
-				<button className="newsFeed__more btn btn-primary">Show More</button>
+				<button
+					className="newsFeed__more btn btn-primary"
+					onClick={this.handleShowMore.bind(this)}>{this.state.currentPage === this.state.maxPages ? 'No More News' : 'Show More'}</button>
 				<p className="newsFeed__sponsor">Powered by <a href="https://newsapi.org/" target="_blank" rel="noopener noreferrer">News API</a>.</p>
 			</div>
 		)

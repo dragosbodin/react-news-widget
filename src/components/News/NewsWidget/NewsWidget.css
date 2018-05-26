@@ -25,8 +25,9 @@
 
 .newsFeed__sources .Select-control {
 	height: auto;
-	border-radius: 5px;
+	background-color: transparent;
 	border: 2px solid #949494;
+	border-radius: 5px;
 }
 
 .newsFeed__sources.is-focused:not(.is-open) .Select-control,
@@ -48,4 +49,27 @@
 	padding: 0;
 	margin: 0 0 2rem;
 	list-style: none;
+}
+
+.btn.btn-primary {
+	background-color: transparent;
+	border: 3px solid #dc3f8e;
+	font-size: 1rem;
+	font-weight: 700;
+	color: #dc3f8e;
+	border-radius: 0;
+	transition: all .2s ease-in-out;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:not(:disabled):not(.disabled):active {
+	background-color: #dc3f8e;
+	border-color: #dc3f8e;
+	color: #fff;
+	box-shadow: 0 0 0 transparent;
+}
+
+.newsFeed__sponsor {
+	margin-top: 2rem;
 }
