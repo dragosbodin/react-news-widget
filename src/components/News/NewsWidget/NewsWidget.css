@@ -73,3 +73,21 @@
 .newsFeed__sponsor {
 	margin-top: 2rem;
 }
+
+.newsItemsTransition-enter {
+	opacity: 0.01;
+}
+
+.newsItemsTransition-enter.newsItemsTransition-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+
+.newsItemsTransition-leave {
+	opacity: 1;
+}
+
+.newsItemsTransition-leave.newsItemsTransition-leave-active {
+	opacity: 0.01;
+	transition: opacity 300ms ease-in;
+}

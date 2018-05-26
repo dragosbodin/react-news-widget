@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import NewsItem from '../NewsItem';
 import Select from 'react-select';
@@ -96,15 +97,20 @@ class NewsWidget extends Component {
 				</div>
 				{articles.length > 0 ? (
 					<ul className="newsFeed__list">
-						{articles}
+						<ReactCSSTransitionGroup
+							transitionName="newsItemsTransition"
+							transitionEnterTimeout={500}
+							transitionLeaveTimeout={300}>
+							{articles}
+						</ReactCSSTransitionGroup>
 					</ul>
 				) : (
 					<p className="newsFeed__empty">No news articles were found.</p>
 				)}
 				<button
 					className="newsFeed__more btn btn-primary"
-					onClick={this.handleShowMore.bind(this)}
-				>{this.state.currentPage === this.state.maxPages ? 'No More News' : 'Show More'}</button>
+					onClick={this.handleShowMore.bind(this)}>
+					{this.state.currentPage === this.state.maxPages ? 'No More News' : 'Show More'}</button>
 				<p className="newsFeed__sponsor">Powered by <a href="https://newsapi.org/" target="_blank" rel="noopener noreferrer">News API</a>.</p>
 			</div>
 		)
